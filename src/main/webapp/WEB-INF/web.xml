@@ -19,7 +19,7 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>customers.xhtml</welcome-file>
+        <welcome-file>persons.xhtml</welcome-file>
     </welcome-file-list>
 
 </web-app>
