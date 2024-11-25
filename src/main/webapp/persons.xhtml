@@ -1,26 +1,30 @@
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <f:view>
 	<h:head>
 		<h:outputStylesheet>
-            th, td {
-                text-align: center;
-            }
-
-            h3 {
+			body{
+				background-color: #fafafa
+			}
+			h3 {
                 margin-top: 0;
                 text-align: center;
             }
-
+			/*
+            th, td {
+                text-align: center;
+            }
             input[type="text"] {
                 width: 100%;
                 box-sizing: border-box;
                 -webkit-box-sizing:border-box;
                 -moz-box-sizing: border-box;
             }
-
+			*/
         </h:outputStylesheet>
 	</h:head>
 	<h:body>
@@ -29,14 +33,35 @@
 			<div class="ui-g">
 				<div class="ui-g-2" />
 				<div class="ui-g-8">
+
 					<h:form id="persons">
+						<p:toolbar id="toolbar">
+							<f:facet name="left">
+
+								<p:inputText id="termoPesquisa"
+									placeholder="Digite aqui um termo para pesquisa..." size="30"
+									value="#{personController.searchInput}" />
+
+								<p:commandButton value="Pesquisar" icon="fa fa-search"
+									actionListener="#{personController.search}" update="personList"
+									process="@this termoPesquisa" />
+
+								<span class="ui-separator"> <span
+									class="ui-icon ui-icon-grip-dotted-vertical" />
+								</span>
+
+								<p:commandButton value="Nova" icon="fa fa-plus"
+									actionListener="#{personController.prepareNewPerson}"
+									oncomplete="PF('personDialogWidgetVar').show()"
+									update="personDialog" process="@this" />
+
+							</f:facet>
+						</p:toolbar>
 						<p:growl id="growl" sticky="true" />
 
 						<p:dataTable id="personList" var="person"
-							value="#{personController.persons}">
-							<p:column headerText="Id">
-								<h:outputText value="#{person.id}" />
-							</p:column>
+							value="#{personController.persons}" paginator="true" rows="10"
+							paginatorPosition="bottom" sortBy="#{person.id}">
 
 							<p:column headerText="Name">
 								<p:inputText id="nameInput" value="#{person.name}" />
@@ -54,59 +79,64 @@
 								<p:inputText id="telephoneInput" value="#{person.telephone}" />
 							</p:column>
 
-							<p:column>
-								<p:commandButton update="personList" value="Delete"
-									icon="ui-icon-closethick"
+							<p:column headerText="Actions">
+								<p:commandButton value="Delete" icon="ui-icon-closethick"
 									action="#{personController.delete(person)}"
-									styleClass="ui-priority-primary">
-								</p:commandButton>
+									styleClass="ui-priority-primary" update="personList"
+									process="@this" />
 							</p:column>
 						</p:dataTable>
 						<br />
-						<p:commandButton style="float: right" id="save" value="Save"
+						<p:commandButton style="float: right" id="save" value="Update"
 							tyleClass="ui-priority-primary"
 							action="#{personController.update}" icon="ui-icon-disk"
 							update="growl">
 							<f:ajax execute="@form" render="@form" />
 						</p:commandButton>
+						<p:dialog id="personDialog" header="New Person"
+							widgetVar="personDialogWidgetVar" modal="true" resizable="false"
+							closeOnEscape="true" width="800" height="400" draggable="false">
+
+							<p:defaultCommand target="addCommandButton" scope="personDialog" />
+
+							<h:panelGrid id="personDialogPanelGrid" columns="3"
+								cellpadding="5" style="margin: 0 auto;"
+								rendered="#{personController.person ne null}">
+
+								<div class="ui-g">
+									<div class="ui-g-12">
+										<p:outputLabel for="name" value="Name" />
+										<p:inputText id="name" value="#{personController.person.name}" />
+										<p:message for="name" />
+
+										<p:outputLabel for="type" value="type" />
+										<p:inputText id="type" value="#{personController.person.type}" />
+										<p:message for="type" />
+
+										<p:outputLabel for="email" value="E-Mail" />
+										<p:inputText id="email"
+											value="#{personController.person.email}">
+										</p:inputText>
+										<p:message for="email" />
+
+										<p:outputLabel for="telephone" value="Telephone" />
+										<p:inputText id="telephone"
+											value="#{personController.person.telephone}" />
+										<p:message for="telephone" />
+									</div>
+									<div class="ui-g-12">
+										<p:commandButton id="addCommandButton" value="Add"
+											actionListener="#{personController.add}"
+											update="personList personDialogPanelGrid"
+											oncomplete="if (!args.validationFailed) PF('personDialogWidgetVar').hide()"
+											process="personDialog" />
+									</div>
+								</div>
+							</h:panelGrid>
+						</p:dialog>
 					</h:form>
 				</div>
-				<div class="ui-g-2"></div>
 			</div>
-			<h3>Create a new person</h3>
-            <div class="ui-g">
-                <div class="ui-g-2">
-                </div>
-                <div class="ui-g-8">
-                    <h:form id="add">
-                        <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;">
-                            <p:outputLabel for="name" value="Name"/>
-                            <p:inputText id="name" value="#{personController.person.name}"/>
-                            <p:message for="name"/>
-
-                   			<p:outputLabel for="type" value="type"/>
-                            <p:inputText id="type" value="#{personController.person.type}"/>
-                            <p:message for="type"/>
-
-                            <p:outputLabel for="email" value="E-Mail"/>
-                            <p:inputText id="email"
-                                         value="#{personController.person.email}">
-                            </p:inputText>
-                            <p:message for="email"/>
-                            
-                            <p:outputLabel for="telephone" value="Telephone"/>
-                            <p:inputText id="telephone" value="#{personController.person.telephone}"/>
-                            <p:message for="telephone"/>
-                            
-                            <p:commandButton update="@form :persons:personList" value="Add"
-                                             action="#{personController.add}">
-                            </p:commandButton>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
-                <div class="ui-g-2">
-                </div>
-            </div>
 		</p:outputPanel>
 	</h:body>
 </f:view>

@@ -21,7 +21,9 @@ public class PersonController implements Serializable {
 
     private List<Person> persons;
 
-    private Person person = new Person();
+    private Person person;
+
+    private String searchInput; 
 
     @Inject
     private PersonRepository personRepository;
@@ -38,15 +40,34 @@ public class PersonController implements Serializable {
 
     public void add() {
     	personRepository.addNewPerson(person);
-        this.persons = personRepository.loadAllPersons();
-        this.person = new Person();
+    	loadRecords();
     }
 
+    private void loadRecords() {
+    	if (searchInputIsFilled() ) {
+    		search();
+        } else {
+            this.persons = personRepository.loadAllPersons();
+        }
+    }
+    
+    private boolean searchInputIsFilled() {
+        return searchInput != null && !"".equals(searchInput);
+    }
+    
+    public void search() {
+    	persons = personRepository.searchByName(searchInput);
+    }
+    
     public void update() {
     	personRepository.update(persons);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Update successful"));
     }
-
+    
+    public void prepareNewPerson() {
+    	person = new Person();
+    }
+    
     public List<Person> getPersons() {
         return persons;
     }
@@ -70,4 +91,13 @@ public class PersonController implements Serializable {
     public void setPersonRepository(PersonRepository personManager) {
         this.personRepository = personManager;
     }
+
+	public String getSearchInput() {
+		return searchInput;
+	}
+
+	public void setSearchInput(String searchInput) {
+		this.searchInput = searchInput;
+	}
+    
 }
