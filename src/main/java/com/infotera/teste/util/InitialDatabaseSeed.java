@@ -21,11 +21,14 @@ public class InitialDatabaseSeed {
     @PostConstruct
     public void init() {
 
-        System.out.println("Storing three initial persons");
+        System.out.println("Initial database load");
 
-        this.entityManager.persist(createPerson("John Doe", "M", "doe@john.de", "5511911111111"));
-        this.entityManager.persist(createPerson("Max Mustermann", "M", "max@gmail.com", "5511922222222"));
-        this.entityManager.persist(createPerson("Philip Riecks", "M", "philip@riecks.de", "5511933333333"));
+        this.entityManager.persist(createPerson("Teste 1", "M", "teste1@gmail.com", "5511922222222"));
+        this.entityManager.persist(createPerson("Teste 2", "F", "teste2@gmail.com", "5511922222222"));
+        this.entityManager.persist(createPerson("Teste 3", "M", "teste3@gmail.com", "5511922222222"));
+        this.entityManager.persist(createPerson("Teste 4", "F", "teste4@gmail.com", "5511911111111"));
+        this.entityManager.persist(createPerson("Teste 5", "F", "teste5@gmail.com", "5511922222222"));
+        this.entityManager.persist(createPerson("Teste 6", "M", "teste6@gmail.com", "5511933333333"));
         
     }
 
