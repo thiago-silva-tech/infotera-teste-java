@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Email;
 
 @Entity
 @Table(name = "contact")
@@ -22,12 +24,16 @@ public class Contact {
     private Person person;
 	
 	@Column(name = "nm_contact", length = 45, nullable = false)
+	@NotEmpty
     private String name;
 	
 	@Column(name = "nr_telephone", length = 45, nullable = false)
+	@NotEmpty
     private String telephoneNumber;
 	
 	@Column(name = "nm_email", length = 45, nullable = false)
+	@NotEmpty
+	@Email
     private String email;
 
 	public Long getId() {
@@ -36,6 +42,10 @@ public class Contact {
 
 	public Person getPerson() {
 		return person;
+	}
+	
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 	
 	public String getName() {

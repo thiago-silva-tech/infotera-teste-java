@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.Enumerated;
 import javax.persistence.EnumType;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "document")
@@ -24,11 +25,12 @@ public class Document {
     private Person person;
 	
 	@Column(name = "nr_document", length = 45, nullable = false)
-    private String documentNumber;
+    @NotEmpty
+	private String documentNumber;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tp_document", length = 45, nullable = false)
-    private DocumentType type;
+	private DocumentType type;
 
 	public enum DocumentType {
         CPF, RG, CNH, RNE, CIE, PASSPORT
@@ -40,6 +42,10 @@ public class Document {
 
 	public Person getPerson() {
 		return person;
+	}
+	
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 	
 	public String getDocumentNumber() {

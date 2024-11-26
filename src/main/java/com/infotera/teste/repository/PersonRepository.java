@@ -5,6 +5,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import com.infotera.teste.model.Address;
+import com.infotera.teste.model.Contact;
+import com.infotera.teste.model.Document;
 import com.infotera.teste.model.Person;
 
 import java.util.List;
@@ -34,17 +37,21 @@ public class PersonRepository {
     	}
     }
 
-    public void addNewPerson(Person person) {
-
-        Person newPerson = new Person();
-        
-        newPerson.setName(person.getName());
-        newPerson.setType(person.getType());
-        newPerson.setEmail(person.getEmail());
-        newPerson.setTelephone(person.getTelephone());
-
-        this.entityManager.persist(newPerson);
-    }
+    public void addNewPerson(Person person, List<Contact> contacts, List<Document> documents, List<Address> addresses) {
+        this.entityManager.persist(person);
+        contacts.forEach((contact) -> {
+        	contact.setPerson(person);
+        	this.entityManager.persist(contact);
+		});
+        documents.forEach((document) -> {
+        	document.setPerson(person);
+        	this.entityManager.persist(document);
+		});
+        addresses.forEach((address) -> {
+        	address.setPerson(person);
+        	this.entityManager.persist(address);
+		});
+	}
 
     public void update(List<Person> persons) {
     	persons.forEach(entityManager::merge);

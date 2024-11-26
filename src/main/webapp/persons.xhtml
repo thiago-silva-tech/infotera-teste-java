@@ -27,9 +27,8 @@
 						<p:toolbar id="toolbar">
 							<f:facet name="left">
 
-								<p:inputText id="termoPesquisa"
-									placeholder="Type your search" size="30"
-									value="#{personController.searchInput}" />
+								<p:inputText id="termoPesquisa" placeholder="Type your search"
+									size="30" value="#{personController.searchInput}" />
 
 								<p:commandButton value="Search" icon="fa fa-search"
 									actionListener="#{personController.search}" update="personList"
@@ -84,43 +83,162 @@
 						</p:commandButton>
 						<p:dialog id="personDialog" header="New Person"
 							widgetVar="personDialogWidgetVar" modal="true" resizable="false"
-							closeOnEscape="true" width="800" height="400" draggable="false">
+							closeOnEscape="true" width="600" height="400" draggable="false">
 
 							<p:defaultCommand target="addCommandButton" scope="personDialog" />
 
-							<h:panelGrid id="personDialogPanelGrid" columns="3"
-								cellpadding="5" style="margin: 0 auto;"
-								rendered="#{personController.person ne null}">
+							<h:panelGrid id="personDialogPanelGrid"
+								rendered="#{personController.person ne null}"
+								style="width: 100%;">
 
-								<div class="ui-g">
-									<div class="ui-g-12">
-										<p:outputLabel for="name" value="Name" />
-										<p:inputText id="name" value="#{personController.person.name}" />
-										<p:message for="name" />
+								<p:panel header="Person data">
+									<p:panelGrid columns="1" styleClass="grid">
+										<div class="p-field">
+											<p:outputLabel for="name" value="Name" />
+											<p:inputText id="name"
+												value="#{personController.person.name}" />
+											<p:message for="name" />
+										</div>
+										<div class="p-field">
+											<p:outputLabel for="type" value="type" />
+											<p:inputText id="type"
+												value="#{personController.person.type}" />
+											<p:message for="type" />
+										</div>
+										<div class="p-field">
+											<p:outputLabel for="email" value="E-Mail" />
+											<p:inputText id="email"
+												value="#{personController.person.email}">
+											</p:inputText>
+											<p:message for="email" />
+										</div>
+										<div class="p-field">
+											<p:outputLabel for="telephone" value="Telephone" />
+											<p:inputText id="telephone"
+												value="#{personController.person.telephone}" />
+											<p:message for="telephone" />
+										</div>
+									</p:panelGrid>
+								</p:panel>
+								<p:panel header="Documents">
+									<p:commandButton id="addNewDocumentCommandButton"
+										value="Add Document"
+										actionListener="#{personController.addNewDocument}"
+										update="personDialogDocumentPanel" process="@this" />
+									<p:outputPanel id="personDialogDocumentPanel"
+										header="Addresses" style="margin-bottom: 20px;">
+										<ui:repeat value="#{personController.getDocuments()}"
+											var="item" varStatus="status">
+											<p:panel header="Document # #{status.index + 1}"
+												style="margin-bottom: 20px;">
+												<p:panelGrid columns="1" styleClass="grid">
 
-										<p:outputLabel for="type" value="type" />
-										<p:inputText id="type" value="#{personController.person.type}" />
-										<p:message for="type" />
+													<p:outputLabel for="newDocument-number" value="Number" />
+													<p:inputText id="newDocument-number"
+														value="#{item.documentNumber}">
+													</p:inputText>
+													<p:message for="newDocument-number" />
 
-										<p:outputLabel for="email" value="E-Mail" />
-										<p:inputText id="email"
-											value="#{personController.person.email}">
-										</p:inputText>
-										<p:message for="email" />
+													<p:outputLabel for="newDocument-type" value="Type" />
+													<p:inputText id="newDocument-type" value="#{item.type}">
+													</p:inputText>
+													<p:message for="newDocument-type" />
 
-										<p:outputLabel for="telephone" value="Telephone" />
-										<p:inputText id="telephone"
-											value="#{personController.person.telephone}" />
-										<p:message for="telephone" />
-									</div>
-									<div class="ui-g-12">
-										<p:commandButton id="addCommandButton" value="Add"
-											actionListener="#{personController.add}"
-											update="personList personDialogPanelGrid"
-											oncomplete="if (!args.validationFailed) PF('personDialogWidgetVar').hide()"
-											process="personDialog" />
-									</div>
-								</div>
+												</p:panelGrid>
+											</p:panel>
+										</ui:repeat>
+									</p:outputPanel>
+								</p:panel>
+								<p:panel header="Contacts">
+									<p:commandButton id="addNewContactCommandButton"
+										value="Add Contact"
+										actionListener="#{personController.addNewContact}"
+										update="personDialogContactsPanel" process="@this" />
+									<p:outputPanel id="personDialogContactsPanel" header="Contacts"
+										style="margin-bottom: 20px;">
+										<ui:repeat value="#{personController.getContacts()}"
+											var="item" varStatus="status">
+											<p:panel header="Contact # #{status.index + 1}"
+												style="margin-bottom: 20px;">
+												<p:panelGrid columns="1" styleClass="grid">
+
+													<p:outputLabel for="newContact-name" value="Name" />
+													<p:inputText id="newContact-name" value="#{item.name}">
+													</p:inputText>
+													<p:message for="newContact-name" />
+
+													<p:outputLabel for="newContact-telephoneNumber"
+														value="Telephone Number" />
+													<p:inputText id="newContact-telephoneNumber"
+														value="#{item.telephoneNumber}">
+													</p:inputText>
+													<p:message for="newContact-telephoneNumber" />
+
+													<p:outputLabel for="newContact-email" value="Email" />
+													<p:inputText id="newContact-email" value="#{item.email}">
+													</p:inputText>
+													<p:message for="newContact-email" />
+
+												</p:panelGrid>
+											</p:panel>
+
+										</ui:repeat>
+									</p:outputPanel>
+								</p:panel>
+								<p:panel header="Addresses">
+									<p:commandButton id="addNewAddressCommandButton"
+										value="Add Address"
+										actionListener="#{personController.addNewAddress}"
+										update="personDialogAddressPanel" process="@this" />
+									<p:outputPanel id="personDialogAddressPanel" header="Addresses"
+										style="margin-bottom: 20px;">
+										<ui:repeat value="#{personController.getAddresses()}"
+											var="item" varStatus="status">
+											<p:panel header="Address # #{status.index + 1}"
+												style="margin-bottom: 20px;">
+												<p:panelGrid columns="1" styleClass="grid">
+
+													<p:outputLabel for="newAddress-name" value="Name" />
+													<p:inputText id="newAddress-name"
+														value="#{item.addressName}">
+													</p:inputText>
+													<p:message for="newAddress-name" />
+
+													<p:outputLabel for="newAddress-number" value="Number" />
+													<p:inputText id="newAddress-number"
+														value="#{item.addressNumber}">
+													</p:inputText>
+													<p:message for="newAddress-number" />
+
+
+													<p:outputLabel for="newAddress-cityName" value="City Name" />
+													<p:inputText id="newAddress-cityName"
+														value="#{item.cityName}">
+													</p:inputText>
+													<p:message for="newAddress-cityName" />
+
+													<p:outputLabel for="newAddress-stateName" value="State Name" />
+													<p:inputText id="newAddress-stateName"
+														value="#{item.stateName}">
+													</p:inputText>
+													<p:message for="newAddress-stateName" />
+													
+													<p:outputLabel for="newAddress-countryName" value="Country Name" />
+													<p:inputText id="newAddress-countryName"
+														value="#{item.countryName}">
+													</p:inputText>
+													<p:message for="newAddress-countryName" />
+													
+												</p:panelGrid>
+											</p:panel>
+										</ui:repeat>
+									</p:outputPanel>
+								</p:panel>
+								<p:commandButton id="addCommandButton" value="Save"
+									actionListener="#{personController.add}"
+									update="personList personDialogPanelGrid"
+									oncomplete="if (!args.validationFailed) PF('personDialogWidgetVar').hide()"
+									process="personDialog" style="margin-top: 20px;" />
 							</h:panelGrid>
 						</p:dialog>
 					</h:form>
