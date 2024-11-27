@@ -46,8 +46,7 @@
 								<p:commandButton id="geral-id-buttom" value="Update"
 									icon="fa fa-plus"
 									oncomplete="PF('personDialogWidgetVar').show()"
-									update="personDialog" process="@this"
-									style="display: none" />
+									update="personDialog" process="@this" style="display: none" />
 							</f:facet>
 						</p:toolbar>
 						<p:growl id="growl" sticky="true" />
@@ -124,7 +123,11 @@
 									<p:commandButton id="addNewDocumentCommandButton"
 										value="Add Document"
 										action="#{personController.addNewDocument}"
-										update="personDialogDocumentPanel" process="@this" />
+										update="personDialogDocumentPanel" process="@this"
+										style="margin-bottom: 20px;" />
+									<p:commandButton id="removeDocumentCommandButton"
+										value="Remove Document" update="personDialogDocumentPanel"
+										process="@this" style="display: none" />
 									<p:outputPanel id="personDialogDocumentPanel"
 										header="Addresses" style="margin-bottom: 20px;">
 										<ui:repeat value="#{personController.person.getDocuments()}"
@@ -132,7 +135,12 @@
 											<p:panel header="Document # #{status.index + 1}"
 												style="margin-bottom: 20px;">
 												<p:panelGrid columns="1" styleClass="grid">
-
+													<p:commandButton value="Remove document"
+														icon="ui-icon-closethick"
+														action="#{personController.removeDocument(item)}"
+														oncomplete="document.getElementById('form:removeDocumentCommandButton').click()"
+														process="@this" />
+														
 													<p:outputLabel for="newDocument-number" value="Number" />
 													<p:inputText id="newDocument-number"
 														value="#{item.documentNumber}" size="60" maxlength="45">
@@ -154,7 +162,11 @@
 									<p:commandButton id="addNewContactCommandButton"
 										value="Add Contact"
 										actionListener="#{personController.addNewContact}"
-										update="personDialogContactsPanel" process="@this" />
+										update="personDialogContactsPanel" process="@this"
+										style="margin-bottom: 20px;" />
+									<p:commandButton id="removeContactCommandButton"
+										value="Remove Contact" update="personDialogContactsPanel"
+										process="@this" style="display: none" />
 									<p:outputPanel id="personDialogContactsPanel" header="Contacts"
 										style="margin-bottom: 20px;">
 										<ui:repeat value="#{personController.person.getContacts()}"
@@ -162,7 +174,12 @@
 											<p:panel header="Contact # #{status.index + 1}"
 												style="margin-bottom: 20px;">
 												<p:panelGrid columns="1" styleClass="grid">
-
+													<p:commandButton value="Remove Contact"
+														icon="ui-icon-closethick"
+														action="#{personController.removeContact(item)}"
+														oncomplete="document.getElementById('form:removeContactCommandButton').click()"
+														process="@this" />
+														
 													<p:outputLabel for="newContact-name" value="Name" />
 													<p:inputText id="newContact-name" value="#{item.name}"
 														size="60" maxlength="45" />
@@ -189,7 +206,11 @@
 									<p:commandButton id="addNewAddressCommandButton"
 										value="Add Address"
 										actionListener="#{personController.addNewAddress}"
-										update="personDialogAddressPanel" process="@this" />
+										update="personDialogAddressPanel" process="@this"
+										style="margin-bottom: 20px;" />
+									<p:commandButton id="removeAddressCommandButton"
+										value="Remove Address" update="personDialogAddressPanel"
+										process="@this" style="display: none" />
 									<p:outputPanel id="personDialogAddressPanel" header="Addresses"
 										style="margin-bottom: 20px;">
 										<ui:repeat value="#{personController.person.getAddresses()}"
@@ -197,7 +218,12 @@
 											<p:panel header="Address # #{status.index + 1}"
 												style="margin-bottom: 20px;">
 												<p:panelGrid columns="1" styleClass="grid">
-
+													<p:commandButton value="Remove Address"
+														icon="ui-icon-closethick"
+														action="#{personController.removeAddress(item)}"
+														oncomplete="document.getElementById('form:removeAddressCommandButton').click()"
+														process="@this" />
+														
 													<p:outputLabel for="newAddress-name" value="Name" />
 													<p:inputText id="newAddress-name"
 														value="#{item.addressName}" size="60" maxlength="500" />

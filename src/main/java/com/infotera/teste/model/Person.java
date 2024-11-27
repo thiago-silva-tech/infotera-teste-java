@@ -114,13 +114,12 @@ public class Person {
     }
     
     public void addDocument(Document document) {
-        System.out.print(document);
     	document.setPerson(this);
     	this.documents.add(document);
     }
     
     public void removeDocument(Document document) {
-    	this.documents.add(document);
+    	this.documents.remove(document);
     }
 	
 	public List<Address> getAddresses() {

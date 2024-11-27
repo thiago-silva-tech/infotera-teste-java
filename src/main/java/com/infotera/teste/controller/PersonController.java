@@ -137,4 +137,22 @@ public class PersonController implements Serializable {
 			this.person.addDocument(new Document());
 		}
 	}
+	
+	public void removeContact(Contact contact) {
+		if (this.person != null) {
+			this.person.removeContact(contact);;
+		}
+	}
+	
+	public void removeAddress(Address address) {
+		if (this.person != null) {
+			this.person.removeAddress(address);;
+		}
+	}
+
+	public void removeDocument(Document document) {
+		if (this.person != null) {
+			this.person.removeDocument(document);;
+		}
+	}
 }
