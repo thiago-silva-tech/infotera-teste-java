@@ -12,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Email;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,23 +43,26 @@ public class Person {
 	@OneToMany(
 			mappedBy = "person", 
 			cascade = CascadeType.ALL, 
-			orphanRemoval = true
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
 	)
-	 private List<Document> documents;
+	 private List<Document> documents = new ArrayList<>();
 	 
 	@OneToMany(
 			mappedBy = "person", 
 			cascade = CascadeType.ALL, 
-			orphanRemoval = true
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
 	)
-	private List<Address> addresses;
+	private List<Address> addresses = new ArrayList<>();
 	
 	@OneToMany(
 			mappedBy = "person", 
 			cascade = CascadeType.ALL, 
-			orphanRemoval = true
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
 	)
-	private List<Contact> contacts;
+	private List<Contact> contacts = new ArrayList<>();
 	
 	public Long getId() {
 		return id;
@@ -101,10 +105,17 @@ public class Person {
     }
 
     public void setDocuments(List<Document> documents) {
+        documents.forEach(document -> document.setPerson(this));
         this.documents = documents;
     }
     
     public void addDocument(Document document) {
+    	document.setPerson(this);
+    	this.documents.add(document);
+    }
+    
+    public void removeDocument(Document document) {
+    	document.setPerson(null);
     	this.documents.add(document);
     }
 	
@@ -113,11 +124,18 @@ public class Person {
     }
 
     public void setAddresses(List<Address> addresses) {
+    	addresses.forEach(address -> address.setPerson(this));
         this.addresses = addresses;
     }
     
     public void addAddress(Address address) {
+    	address.setPerson(this);
     	this.addresses.add(address);
+    }
+    
+    public void removeAddress(Address address) {
+    	address.setPerson(null);
+    	this.addresses.remove(address);
     }
     
 	public List<Contact> getContacts() {
@@ -125,11 +143,18 @@ public class Person {
     }
 
     public void setContacts(List<Contact> contacts) {
+    	contacts.forEach(contact -> contact.setPerson(this));
         this.contacts = contacts;
     }
     
     public void addContact(Contact contact) {
+    	contact.setPerson(this);
     	this.contacts.add(contact);
+    }
+    
+    public void removeContact(Contact contact) {
+    	contact.setPerson(null);
+    	this.contacts.remove(contact);
     }
 }
 

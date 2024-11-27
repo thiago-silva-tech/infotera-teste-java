@@ -52,19 +52,19 @@
 							paginatorPosition="bottom" sortBy="#{person.id}">
 
 							<p:column headerText="Name">
-								<p:inputText id="nameInput" value="#{person.name}" />
+								<h:outputText value="#{person.name}" />
 							</p:column>
 
 							<p:column headerText="Type">
-								<p:inputText id="typeInput" value="#{person.type}" />
+								<h:outputText value="#{person.type}" />
 							</p:column>
 
 							<p:column headerText="Email">
-								<p:inputText id="emailInput" value="#{person.email}" />
+								<h:outputText value="#{person.email}" />
 							</p:column>
 
 							<p:column headerText="Telephone">
-								<p:inputText id="telephoneInput" value="#{person.telephone}" />
+								<h:outputText value="#{person.telephone}" />
 							</p:column>
 
 							<p:column headerText="Actions">
@@ -81,9 +81,13 @@
 							update="growl">
 							<f:ajax execute="@form" render="@form" />
 						</p:commandButton>
+						<!-- 
+					</h:form>
+					<h:form id="newPerson">
+					-->
 						<p:dialog id="personDialog" header="New Person"
 							widgetVar="personDialogWidgetVar" modal="true" resizable="false"
-							closeOnEscape="true" width="600" height="400" draggable="false">
+							closeOnEscape="true" width="850" height="400" draggable="false">
 
 							<p:defaultCommand target="addCommandButton" scope="personDialog" />
 
@@ -93,41 +97,39 @@
 
 								<p:panel header="Person data">
 									<p:panelGrid columns="1" styleClass="grid">
-										<div class="p-field">
-											<p:outputLabel for="name" value="Name" />
-											<p:inputText id="name"
-												value="#{personController.person.name}" />
-											<p:message for="name" />
-										</div>
-										<div class="p-field">
-											<p:outputLabel for="type" value="type" />
-											<p:inputText id="type"
-												value="#{personController.person.type}" />
-											<p:message for="type" />
-										</div>
-										<div class="p-field">
-											<p:outputLabel for="email" value="E-Mail" />
-											<p:inputText id="email"
-												value="#{personController.person.email}">
-											</p:inputText>
-											<p:message for="email" />
-										</div>
-										<div class="p-field">
-											<p:outputLabel for="telephone" value="Telephone" />
-											<p:inputText id="telephone"
-												value="#{personController.person.telephone}" />
-											<p:message for="telephone" />
-										</div>
+										<p:outputLabel for="name" value="Name" />
+										<p:inputText id="name" value="#{personController.person.name}"
+											size="65" maxlength="200" />
+										<p:message for="name" />
+
+										<p:outputLabel for="email" value="E-Mail" />
+										<p:inputText id="email"
+											value="#{personController.person.email}" size="65"
+											maxlength="200">
+										</p:inputText>
+										<p:message for="email" />
+
+										<p:outputLabel for="telephone" value="Telephone" />
+										<p:inputText id="telephone"
+											value="#{personController.person.telephone}" size="65"
+											maxlength="200" />
+										<p:message for="telephone" />
+
+										<p:outputLabel for="type" value="Type" />
+										<p:inputText id="type" value="#{personController.person.type}"
+											size="70" maxlength="2" />
+										<p:message for="type" />
+
 									</p:panelGrid>
 								</p:panel>
 								<p:panel header="Documents">
 									<p:commandButton id="addNewDocumentCommandButton"
 										value="Add Document"
-										actionListener="#{personController.addNewDocument}"
+										action="#{personController.addNewDocument}"
 										update="personDialogDocumentPanel" process="@this" />
 									<p:outputPanel id="personDialogDocumentPanel"
 										header="Addresses" style="margin-bottom: 20px;">
-										<ui:repeat value="#{personController.getDocuments()}"
+										<ui:repeat value="#{personController.person.getDocuments()}"
 											var="item" varStatus="status">
 											<p:panel header="Document # #{status.index + 1}"
 												style="margin-bottom: 20px;">
@@ -135,12 +137,13 @@
 
 													<p:outputLabel for="newDocument-number" value="Number" />
 													<p:inputText id="newDocument-number"
-														value="#{item.documentNumber}">
+														value="#{item.documentNumber}" size="60" maxlength="45">
 													</p:inputText>
 													<p:message for="newDocument-number" />
 
 													<p:outputLabel for="newDocument-type" value="Type" />
-													<p:inputText id="newDocument-type" value="#{item.type}">
+													<p:inputText id="newDocument-type" value="#{item.type}"
+														size="60" maxlength="45">
 													</p:inputText>
 													<p:message for="newDocument-type" />
 
@@ -156,27 +159,26 @@
 										update="personDialogContactsPanel" process="@this" />
 									<p:outputPanel id="personDialogContactsPanel" header="Contacts"
 										style="margin-bottom: 20px;">
-										<ui:repeat value="#{personController.getContacts()}"
+										<ui:repeat value="#{personController.person.getContacts()}"
 											var="item" varStatus="status">
 											<p:panel header="Contact # #{status.index + 1}"
 												style="margin-bottom: 20px;">
 												<p:panelGrid columns="1" styleClass="grid">
 
 													<p:outputLabel for="newContact-name" value="Name" />
-													<p:inputText id="newContact-name" value="#{item.name}">
-													</p:inputText>
+													<p:inputText id="newContact-name" value="#{item.name}"
+														size="60" maxlength="45" />
 													<p:message for="newContact-name" />
 
 													<p:outputLabel for="newContact-telephoneNumber"
 														value="Telephone Number" />
 													<p:inputText id="newContact-telephoneNumber"
-														value="#{item.telephoneNumber}">
-													</p:inputText>
+														value="#{item.telephoneNumber}" size="60" maxlength="45" />
 													<p:message for="newContact-telephoneNumber" />
 
 													<p:outputLabel for="newContact-email" value="Email" />
-													<p:inputText id="newContact-email" value="#{item.email}">
-													</p:inputText>
+													<p:inputText id="newContact-email" value="#{item.email}"
+														size="60" maxlength="45" />
 													<p:message for="newContact-email" />
 
 												</p:panelGrid>
@@ -192,7 +194,7 @@
 										update="personDialogAddressPanel" process="@this" />
 									<p:outputPanel id="personDialogAddressPanel" header="Addresses"
 										style="margin-bottom: 20px;">
-										<ui:repeat value="#{personController.getAddresses()}"
+										<ui:repeat value="#{personController.person.getAddresses()}"
 											var="item" varStatus="status">
 											<p:panel header="Address # #{status.index + 1}"
 												style="margin-bottom: 20px;">
@@ -200,35 +202,32 @@
 
 													<p:outputLabel for="newAddress-name" value="Name" />
 													<p:inputText id="newAddress-name"
-														value="#{item.addressName}">
-													</p:inputText>
+														value="#{item.addressName}" size="60" maxlength="500" />
 													<p:message for="newAddress-name" />
 
 													<p:outputLabel for="newAddress-number" value="Number" />
 													<p:inputText id="newAddress-number"
-														value="#{item.addressNumber}">
-													</p:inputText>
+														value="#{item.addressNumber}" size="60" maxlength="10" />
 													<p:message for="newAddress-number" />
 
 
 													<p:outputLabel for="newAddress-cityName" value="City Name" />
 													<p:inputText id="newAddress-cityName"
-														value="#{item.cityName}">
-													</p:inputText>
+														value="#{item.cityName}" size="60" maxlength="20" />
 													<p:message for="newAddress-cityName" />
 
-													<p:outputLabel for="newAddress-stateName" value="State Name" />
+													<p:outputLabel for="newAddress-stateName"
+														value="State Name" />
 													<p:inputText id="newAddress-stateName"
-														value="#{item.stateName}">
-													</p:inputText>
+														value="#{item.stateName}" size="60" maxlength="20" />
 													<p:message for="newAddress-stateName" />
-													
-													<p:outputLabel for="newAddress-countryName" value="Country Name" />
+
+													<p:outputLabel for="newAddress-countryName"
+														value="Country Name" />
 													<p:inputText id="newAddress-countryName"
-														value="#{item.countryName}">
-													</p:inputText>
+														value="#{item.countryName}" size="60" maxlength="20" />
 													<p:message for="newAddress-countryName" />
-													
+
 												</p:panelGrid>
 											</p:panel>
 										</ui:repeat>

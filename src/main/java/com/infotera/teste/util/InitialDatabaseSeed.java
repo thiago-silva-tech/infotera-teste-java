@@ -6,6 +6,9 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.infotera.teste.model.Address;
+import com.infotera.teste.model.Contact;
+import com.infotera.teste.model.Document;
 import com.infotera.teste.model.Person;
 
 import java.time.LocalDate;
@@ -23,26 +26,46 @@ public class InitialDatabaseSeed {
 
         System.out.println("Initial database load");
 
-        this.entityManager.persist(createPerson("Teste 1", "M", "teste1@gmail.com", "5511922222222"));
-        this.entityManager.persist(createPerson("Teste 2", "F", "teste2@gmail.com", "5511922222222"));
-        this.entityManager.persist(createPerson("Teste 3", "M", "teste3@gmail.com", "5511922222222"));
-        this.entityManager.persist(createPerson("Teste 4", "F", "teste4@gmail.com", "5511911111111"));
-        this.entityManager.persist(createPerson("Teste 5", "F", "teste5@gmail.com", "5511922222222"));
-        this.entityManager.persist(createPerson("Teste 6", "M", "teste6@gmail.com", "5511933333333"));
-        
+        this.entityManager.persist(createRamdomPerson());
+        this.entityManager.persist(createRamdomPerson());
+        this.entityManager.persist(createRamdomPerson());
+        this.entityManager.persist(createRamdomPerson());
+
     }
 
-    private Person createPerson(
-    		String name, 
-    		String type, 
-    		String email, 
-    		String telephone
-    ) {
-        Person result = new Person();
-        result.setName(name);
-        result.setType(type);
-        result.setEmail(email);
-        result.setTelephone(telephone);
-        return result;
+    private Person createRamdomPerson() {
+    	int randomNumber = (int) (Math.random() * 1000) + 1;
+    	
+        Person person = new Person();
+        person.setName("Teste " + randomNumber);
+        person.setType("M");
+        person.setEmail("teste"+randomNumber+"@gmail.com");
+        person.setTelephone("5511922222222");
+        
+        
+        Document document1 = new Document();
+        document1.setDocumentNumber("12345678909");
+        document1.setType("CPF");
+        person.addDocument(document1);
+        Document document2 = new Document();
+        document2.setDocumentNumber("628378467");
+        document2.setType("RG");
+        person.addDocument(document2);
+        
+        Contact contact1 = new Contact();
+        contact1.setName("main contact");
+        contact1.setEmail("teste"+randomNumber+"@gmail.com");
+        contact1.setTelephoneNumber("5511922222222");
+        person.addContact(contact1);
+
+        Address address1 = new Address();
+        address1.setAddressName("R. Teste de Oliveira");
+        address1.setAddressNumber("12345");
+        address1.setCityName("São Paulo");
+        address1.setStateName("SP");
+        address1.setCountryName("Brasil");
+        person.addAddress(address1);
+		
+        return person;
     }
 }

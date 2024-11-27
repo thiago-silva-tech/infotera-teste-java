@@ -37,20 +37,8 @@ public class PersonRepository {
     	}
     }
 
-    public void addNewPerson(Person person, List<Contact> contacts, List<Document> documents, List<Address> addresses) {
+    public void addNewPerson(Person person) {
         this.entityManager.persist(person);
-        contacts.forEach((contact) -> {
-        	contact.setPerson(person);
-        	this.entityManager.persist(contact);
-		});
-        documents.forEach((document) -> {
-        	document.setPerson(person);
-        	this.entityManager.persist(document);
-		});
-        addresses.forEach((address) -> {
-        	address.setPerson(person);
-        	this.entityManager.persist(address);
-		});
 	}
 
     public void update(List<Person> persons) {
@@ -63,7 +51,7 @@ public class PersonRepository {
 		TypedQuery<Person> query = entityManager
 				.createQuery(jpql, Person.class);
 		
-		query.setParameter("name", name + "%");
+		query.setParameter("name", "%" + name + "%");
 		
 		return query.getResultList();
 	}

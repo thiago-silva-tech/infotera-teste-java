@@ -25,10 +25,6 @@ public class PersonController implements Serializable {
 
 	private Person person;
 
-	private List<Contact> contacts;
-	private List<Address> addresses;
-	private List<Document> documents;
-
 	private String searchInput;
 
 	@Inject
@@ -45,12 +41,7 @@ public class PersonController implements Serializable {
 	}
 
 	public void add() {
-		personRepository.addNewPerson(
-			person, 
-			contacts, 
-			documents, 
-			addresses
-		);
+		personRepository.addNewPerson(person);
 		loadRecords();
 	}
 
@@ -77,19 +68,13 @@ public class PersonController implements Serializable {
 
 	public void prepareNewPerson() {
 		person = new Person();
-		contacts = new ArrayList<Contact>();
-		addresses = new ArrayList<Address>();
-		documents = new ArrayList<Document>();
-		//person.setContacts(contacts);
-		//person.setAddresses(addresses);
-		//person.setDocuments(documents);
 	}
 
 	public List<Person> getPersons() {
 		return persons;
 	}
 
-	public void setPerson(List<Person> persons) {
+	public void setPersons(List<Person> persons) {
 		this.persons = persons;
 	}
 
@@ -100,15 +85,7 @@ public class PersonController implements Serializable {
 	public void setPerson(Person person) {
 		this.person = person;
 	}
-
-	public PersonRepository getPersonRepository() {
-		return personRepository;
-	}
-
-	public void setPersonRepository(PersonRepository personManager) {
-		this.personRepository = personManager;
-	}
-
+	
 	public String getSearchInput() {
 		return searchInput;
 	}
@@ -117,51 +94,20 @@ public class PersonController implements Serializable {
 		this.searchInput = searchInput;
 	}
 
-	public List<Contact> getContacts() {
-		return contacts;
-	}
-
-	public void setContacts(List<Contact> contacts) {
-		this.contacts = contacts;
-	}
-
-	public void addContact(Contact contact) {
-		this.contacts.add(contact);
-	}
-	
 	public void addNewContact() {
-		this.contacts.add(new Contact());
+		if (this.person != null) {
+			this.person.addContact(new Contact());
+		}
 	}
-
-	public List<Address> getAddresses() {
-		return addresses;
-	}
-
-	public void setAddresses(List<Address> address) {
-		this.addresses = address;
-	}
-
-	public void addAddress(Address address) {
-		this.addresses.add(address);
-	}
-
 	public void addNewAddress() {
-		this.addresses.add(new Address());
-	}
-	
-	public List<Document> getDocuments() {
-		return documents;
+		if (this.person != null) {
+			this.person.addAddress(new Address());
+		}
 	}
 
-	public void setDocuments(List<Document> documents) {
-		this.documents = documents;
-	}
-
-	public void addDocument(Document document) {
-		this.documents.add(document);
-	}
-	
 	public void addNewDocument() {
-		this.documents.add(new Document());
+		if (this.person != null) {
+			this.person.addDocument(new Document());
+		}
 	}
 }

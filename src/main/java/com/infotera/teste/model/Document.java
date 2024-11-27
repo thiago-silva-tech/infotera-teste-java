@@ -28,13 +28,9 @@ public class Document {
     @NotEmpty
 	private String documentNumber;
 	
-	@Enumerated(EnumType.STRING)
 	@Column(name = "tp_document", length = 45, nullable = false)
-	private DocumentType type;
-
-	public enum DocumentType {
-        CPF, RG, CNH, RNE, CIE, PASSPORT
-    }
+	@NotEmpty
+	private String type;
 	
 	public Long getId() {
 		return id;
@@ -56,11 +52,11 @@ public class Document {
 		this.documentNumber = documentNumber;
 	}
 
-	public DocumentType getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(DocumentType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	
