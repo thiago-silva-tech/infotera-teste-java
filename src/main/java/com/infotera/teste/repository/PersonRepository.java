@@ -19,19 +19,6 @@ public class PersonRepository {
         		.getResultList();
     }
 
-    public void delete(Person person) {
-    	if(person != null) {
-            if (entityManager.contains(person)) {
-                entityManager.remove(person);
-            } else {
-                Person managedPerson = entityManager.find(Person.class, person.getId());
-                if (managedPerson != null) {
-                    entityManager.remove(managedPerson);
-                }
-            }
-    	}
-    }
-
     public void addNewPerson(Person person) {
         this.entityManager.persist(person);
 	}
@@ -63,4 +50,17 @@ public class PersonRepository {
 		
 		return query.getResultList();
 	}
+	
+    public void delete(Person person) {
+    	if(person != null) {
+            if (entityManager.contains(person)) {
+                entityManager.remove(person);
+            } else {
+                Person managedPerson = entityManager.find(Person.class, person.getId());
+                if (managedPerson != null) {
+                    entityManager.remove(managedPerson);
+                }
+            }
+    	}
+    }
 }
