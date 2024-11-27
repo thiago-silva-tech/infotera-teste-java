@@ -23,7 +23,7 @@
 				<div class="ui-g-2" />
 				<div class="ui-g-8">
 
-					<h:form id="persons">
+					<h:form id="form">
 						<p:toolbar id="toolbar">
 							<f:facet name="left">
 
@@ -43,6 +43,11 @@
 									oncomplete="PF('personDialogWidgetVar').show()"
 									update="personDialog" process="@this" />
 
+								<p:commandButton id="geral-id-buttom" value="Update"
+									icon="fa fa-plus"
+									oncomplete="PF('personDialogWidgetVar').show()"
+									update="personDialog" process="@this"
+									style="display: none" />
 							</f:facet>
 						</p:toolbar>
 						<p:growl id="growl" sticky="true" />
@@ -55,10 +60,6 @@
 								<h:outputText value="#{person.name}" />
 							</p:column>
 
-							<p:column headerText="Type">
-								<h:outputText value="#{person.type}" />
-							</p:column>
-
 							<p:column headerText="Email">
 								<h:outputText value="#{person.email}" />
 							</p:column>
@@ -67,25 +68,22 @@
 								<h:outputText value="#{person.telephone}" />
 							</p:column>
 
-							<p:column headerText="Actions">
+							<p:column headerText="Type" width="60">
+								<h:outputText value="#{person.type}" />
+							</p:column>
+
+							<p:column headerText="Actions" width="250">
 								<p:commandButton value="Delete" icon="ui-icon-closethick"
-									action="#{personController.delete(person)}"
-									styleClass="ui-priority-primary" update="personList"
+									action="#{personController.delete(person)}" update="personList"
+									process="@this" />
+								<p:commandButton value="Update" icon="ui-icon-pencil"
+									action="#{personController.prepareUpdatePerson(person)}"
+									oncomplete="document.getElementById('form:geral-id-buttom').click()"
 									process="@this" />
 							</p:column>
 						</p:dataTable>
-						<br />
-						<p:commandButton style="float: right" id="save" value="Update"
-							tyleClass="ui-priority-primary"
-							action="#{personController.update}" icon="ui-icon-disk"
-							update="growl">
-							<f:ajax execute="@form" render="@form" />
-						</p:commandButton>
-						<!-- 
-					</h:form>
-					<h:form id="newPerson">
-					-->
-						<p:dialog id="personDialog" header="New Person"
+						<p:dialog id="personDialog"
+							header="#{personController.formModalTitle}"
 							widgetVar="personDialogWidgetVar" modal="true" resizable="false"
 							closeOnEscape="true" width="850" height="400" draggable="false">
 
@@ -234,7 +232,7 @@
 									</p:outputPanel>
 								</p:panel>
 								<p:commandButton id="addCommandButton" value="Save"
-									actionListener="#{personController.add}"
+									actionListener="#{personController.save}"
 									update="personList personDialogPanelGrid"
 									oncomplete="if (!args.validationFailed) PF('personDialogWidgetVar').hide()"
 									process="personDialog" style="margin-top: 20px;" />

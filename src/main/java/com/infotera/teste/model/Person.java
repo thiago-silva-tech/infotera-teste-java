@@ -11,9 +11,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Email;
-
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "person")
@@ -46,7 +48,7 @@ public class Person {
 			orphanRemoval = true,
 			fetch = FetchType.LAZY
 	)
-	 private List<Document> documents = new ArrayList<>();
+	private Set<Document> documents = new HashSet<Document>();
 	 
 	@OneToMany(
 			mappedBy = "person", 
@@ -54,7 +56,7 @@ public class Person {
 			orphanRemoval = true,
 			fetch = FetchType.LAZY
 	)
-	private List<Address> addresses = new ArrayList<>();
+	private Set<Address> addresses = new HashSet<Address>();
 	
 	@OneToMany(
 			mappedBy = "person", 
@@ -62,7 +64,7 @@ public class Person {
 			orphanRemoval = true,
 			fetch = FetchType.LAZY
 	)
-	private List<Contact> contacts = new ArrayList<>();
+	private Set<Contact> contacts = new HashSet<Contact>();
 	
 	public Long getId() {
 		return id;
@@ -101,29 +103,33 @@ public class Person {
 	}
 	
 	public List<Document> getDocuments() {
-        return documents;
+        return documents.stream()
+                .sorted(Comparator.comparing(o -> o.getCreationDate()))
+                .collect(Collectors.toList());
     }
 
-    public void setDocuments(List<Document> documents) {
+    public void setDocuments(Set<Document> documents) {
         documents.forEach(document -> document.setPerson(this));
         this.documents = documents;
     }
     
     public void addDocument(Document document) {
+        System.out.print(document);
     	document.setPerson(this);
     	this.documents.add(document);
     }
     
     public void removeDocument(Document document) {
-    	document.setPerson(null);
     	this.documents.add(document);
     }
 	
 	public List<Address> getAddresses() {
-        return addresses;
+        return addresses.stream()
+                .sorted(Comparator.comparing(o -> o.getCreationDate()))
+                .collect(Collectors.toList());
     }
 
-    public void setAddresses(List<Address> addresses) {
+    public void setAddresses(Set<Address> addresses) {
     	addresses.forEach(address -> address.setPerson(this));
         this.addresses = addresses;
     }
@@ -134,15 +140,16 @@ public class Person {
     }
     
     public void removeAddress(Address address) {
-    	address.setPerson(null);
     	this.addresses.remove(address);
     }
     
 	public List<Contact> getContacts() {
-        return contacts;
+        return contacts.stream()
+        	.sorted(Comparator.comparing(o -> o.getCreationDate()))
+        	.collect(Collectors.toList());
     }
 
-    public void setContacts(List<Contact> contacts) {
+    public void setContacts(Set<Contact> contacts) {
     	contacts.forEach(contact -> contact.setPerson(this));
         this.contacts = contacts;
     }
@@ -153,7 +160,6 @@ public class Person {
     }
     
     public void removeContact(Contact contact) {
-    	contact.setPerson(null);
     	this.contacts.remove(contact);
     }
 }

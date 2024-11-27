@@ -4,12 +4,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
-import com.infotera.teste.model.Address;
-import com.infotera.teste.model.Contact;
-import com.infotera.teste.model.Document;
 import com.infotera.teste.model.Person;
-
 import java.util.List;
 
 @Stateless
@@ -41,12 +36,25 @@ public class PersonRepository {
         this.entityManager.persist(person);
 	}
 
-    public void update(List<Person> persons) {
-    	persons.forEach(entityManager::merge);
+    public void updatePerson(Person Person) {
+    	entityManager.merge(Person);
+    }
+    
+    public Person getFullPersonRecord(Person person) {
+    	String jpql = "FROM Person p " +
+    			"LEFT JOIN FETCH p.documents d " +
+                "LEFT JOIN FETCH p.addresses a " +
+                "LEFT JOIN FETCH p.contacts c " +
+    			"WHERE p.id = :personId";
+    	
+    	TypedQuery<Person> query = entityManager.createQuery(jpql, Person.class);
+    	query.setParameter("personId", person.getId());
+    	Person fullPersonRecord = query.getSingleResult();
+    	return fullPersonRecord;
     }
     
 	public List<Person> searchByName(String name) {
-		String jpql = "from Person where name like :name";
+		String jpql = "FROM Person WHERE name LIKE :name";
 		
 		TypedQuery<Person> query = entityManager
 				.createQuery(jpql, Person.class);

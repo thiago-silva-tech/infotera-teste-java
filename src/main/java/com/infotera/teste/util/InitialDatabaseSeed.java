@@ -11,8 +11,7 @@ import com.infotera.teste.model.Contact;
 import com.infotera.teste.model.Document;
 import com.infotera.teste.model.Person;
 
-import java.time.LocalDate;
-import java.util.UUID;
+import java.util.Date;
 
 @Startup
 @Singleton
@@ -42,7 +41,6 @@ public class InitialDatabaseSeed {
         person.setEmail("teste"+randomNumber+"@gmail.com");
         person.setTelephone("5511922222222");
         
-        
         Document document1 = new Document();
         document1.setDocumentNumber("12345678909");
         document1.setType("CPF");
@@ -50,6 +48,9 @@ public class InitialDatabaseSeed {
         Document document2 = new Document();
         document2.setDocumentNumber("628378467");
         document2.setType("RG");
+        Date newDate = new Date();
+        newDate.setTime(newDate.getTime() + 1000);
+        document2.setCreationDate(newDate);
         person.addDocument(document2);
         
         Contact contact1 = new Contact();
@@ -65,7 +66,7 @@ public class InitialDatabaseSeed {
         address1.setStateName("SP");
         address1.setCountryName("Brasil");
         person.addAddress(address1);
-		
+
         return person;
     }
 }

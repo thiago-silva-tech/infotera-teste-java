@@ -2,17 +2,23 @@ package com.infotera.teste.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "address")
-public class Address {
+public class Address{
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -42,6 +48,11 @@ public class Address {
 	@NotEmpty
 	private String countryName;
 
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "creation_date", nullable = false)
+	private Date creationDate = new Date();
+	
 	public Long getId() {
 		return id;
 	}
@@ -93,5 +104,12 @@ public class Address {
 	public void setCountryName(String countryName) {
 		this.countryName = countryName;
 	}
-	
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
 }

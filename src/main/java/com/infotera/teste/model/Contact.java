@@ -2,18 +2,24 @@ package com.infotera.teste.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Email;
 
 @Entity
 @Table(name = "contact")
-public class Contact {
+public class Contact{
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -36,6 +42,11 @@ public class Contact {
 	@Email
     private String email;
 
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "creation_date", nullable = false)
+	private Date creationDate = new Date();
+	
 	public Long getId() {
 		return id;
 	}
@@ -70,5 +81,13 @@ public class Contact {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 }
